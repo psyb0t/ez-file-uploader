@@ -5,4 +5,4 @@ services:
     ports:
       - "8080:5000"
     volumes:
-      - ./uploads:/app/uploads
+      - ./app:/app

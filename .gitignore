@@ -1,0 +1,4 @@
+config.py
+__pycache__
+app/uploads/*
+!app/uploads/.gitkeep
