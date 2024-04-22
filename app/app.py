@@ -9,7 +9,6 @@ from flask import (
     url_for,
     render_template,
     flash,
-    session,
 )
 
 app = Flask(__name__)
@@ -17,29 +16,24 @@ UPLOAD_FOLDER = "./uploads"
 SECRET_KEY = "your_secret_key_here"
 CORRECT_PASSWORD = config.UPLOAD_PASSWORD
 
+PWD_PARAM_NAME = "pwd"
+
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["SECRET_KEY"] = SECRET_KEY  # Needed for flashing messages and secure cookies
+app.config["SECRET_KEY"] = SECRET_KEY
 
 
 @app.route("/", methods=["GET", "POST"])
 def upload_file():
-    # Check if user is already authenticated via cookie
-    if not session.get("authenticated"):
-        # Authenticate the user
-        if request.method == "POST" and "password" in request.form:
-            password = request.form["password"]
-            if password == CORRECT_PASSWORD:
-                session["authenticated"] = True  # Set session as authenticated
-                flash("Authenticated successfully!")
-            else:
-                flash("Authentication failed!")
+    authenticated = False
 
-                return redirect(url_for("upload_file"))
+    password = request.args.get(PWD_PARAM_NAME)
+    if password and password == CORRECT_PASSWORD:
+        authenticated = True
 
-    if request.method == "POST" and "file" in request.files:
+    if request.method == "POST" and "file" in request.files and authenticated:
         file = request.files["file"]
         if file:
             filename = f"{int(round(time.time() * 1000))}-{file.filename}"
@@ -48,10 +42,12 @@ def upload_file():
 
             flash("File successfully uploaded!")
 
-            return redirect(url_for("upload_file"))
+            print(f'{url_for("upload_file")}?{PWD_PARAM_NAME}={password}')
 
-    return render_template("index.html", authenticated=session.get("authenticated"))
+            return redirect(f'{url_for("upload_file")}?{PWD_PARAM_NAME}={password}')
+
+    return render_template("index.html", authenticated=authenticated, pwd=password)
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5000, debug=True)
