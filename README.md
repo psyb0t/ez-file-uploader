@@ -37,3 +37,7 @@ This rebellious piece of code is unleashed into the world under the WTFPL – Do
 This is for those who ride the digital waves like they stole them. If this breaks your stuff, remember—you chose to live dangerously.
 
 **ez-file-uploader**: Because sometimes, you just need to upload a file and scream "Fuck the system!" while doing it.
+
+### PS
+
+Don't let the rough edges fool you; this badass app is actually crafted for teaching purposes. It's perfect for showing the ropes of file handling, and Flask in a way that won't put you to sleep. So, gear up, learn something new, and maybe, just maybe, stick it to the man while you're at it.
