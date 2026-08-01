@@ -2,3 +2,6 @@ config.py
 __pycache__
 app/uploads/*
 !app/uploads/.gitkeep
+
+# Release tooling, written per release and never committed
+git-update.sh
